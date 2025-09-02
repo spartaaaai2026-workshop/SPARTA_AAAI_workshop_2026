@@ -1,0 +1,92 @@
+---
+title: "SPARTA — Spatial Reasoning and Therapeutics with AI : From Omics to Imaging"
+---
+
+### Location
+
+**Spatial Reasoning and Therapeutics with AI : From Omics to Imaging** (SPARTA) has been accepted for inclusion as a **one-day** workshop in the [Fortieth AAAI Conference](https://aaai.org/conference/aaai/aaai-26/workshops-call/) on Artificial Intelligence (AAAI-26), to be held at the Singapore EXPO in Singapore, January 20- January 27, 2026.
+
+### Time
+
+Jan 26th, 2026, 9am - 5pm
+
+![](images/aaai_workshop.png)
+
+### What is it about?
+
+#### Motivation
+
+Spatially-resolved data—encompassing spatial transcriptomics, proteomics, radiology, and digital pathology—now enable detailed mapping of molecular, cellular, and tissue-level dynamics in disease. However, integrating these heterogeneous modalities poses significant AI challenges in spatial reasoning, multi-scale modeling, and interpretable approaches for disease understanding and therapeutics research.
+
+Biological reasoning is the ability of computational models to understand, infer, and generate hypotheses based on biological principles, hierarchies, and mechanisms. In SPARTA, this includes evaluating cellular context, tissue architecture, intercellular signaling, and genotype-to-phenotype mapping. Our emphasis is on interpretable AI that leverages causal structure and biological knowledge.
+
+**SPARTA** brings together AI, biomedical, and industry experts to address these challenges. Our goal is to develop spatially-aware, biologically grounded AI systems capable of improving disease understanding, drug discovery, and personalized medicine. Through keynotes, peer-reviewed presentations, panels, and networking sessions, we will advance    novel methods for causal inference, multimodal fusion, and therapeutic prediction in spatial data.
+
+#### Workshop Themes & Topics
+
+We invite contributions—including full papers and poster presentations—in the following:
+
+* Spatial multi-omics integration (combining spatial transcriptomics and proteomics) for target identification.
+* Radiology–pathology feature fusion for phenotype characterization and prediction.
+* Digital pathology + molecular profiling for biomarker discovery.
+* Explainable and causal AI for multi-modal therapeutic insights.
+* Sparse and noisy dataset handling, including transfer learning across cell types and image domains.
+* Biological reasoning: understanding spatially-driven disease mechanisms
+* AI reasoning: moving beyond perception to inference and judgment
+* Spatio-temporal inference: capturing biological processes over time and space
+* Therapeutic reasoning: predicting and explaining treatment outcomes	
+* AI-driven drug discovery pipelines, from preclinical screening to  clinical function.
+* Leveraging data assets for clinical trial support i.e.,  targeting responder/non-responder identification     
+* Benchmarks & datasets for multi-modality drug discovery.
+* Ethical, scalable, and clinically trusted AI systems for therapeutic applications.
+* Emerging technologies such as quantum sensing/quantum imaging and applications
+
+####  Audience & Impact
+
+We target a diverse community: multi-modal AI researchers, spatial biology experts, radiologists, pathologists, pharmaceutical data scientists, and therapeutics R&D AI developers. By organizing this workshop at AAAI, as senior representatives across the industry and academia focusing on therapeutics R&D,, we aim to build a community around “Spatially-Aware AI for Therapeutics” specifically focusing on:
+
+✅Unified across scales: molecular (omics), cellular (pathology), organ-level (radiology)
+
+✅ Therapeutic focus: target identification, biomarkers, patient response
+
+✅ Evaluation-driven: based on benchmarks on real-world datasets
+
+✅ Translational mindset: aimed at industry-academic synergy and drug pipelines
+
+We expect to gather 25-65 attendees and closely interact with the communities of other workshops at AAAI.
+
+####  Format & Key Activities
+We are planning for a full-day workshop consisting of the following activities:
+
+* Invited talks: Experts in biosensors, spatial omics, digital pathology, radiology, AI.
+* Peer-reviewed presentations: Full papers (8–10 pages) and posters (4 pages)
+* Poster and networking sessions
+* Panel discussion: “Bridging Sensing, AI, and Therapeutics Across Scales”
+
+
+### Confirmed keynote speakers 
+
+![](images/xxx.jpg){width=30%}
+
+
+• [Confirmed] Prof. Daniel Racoceanu (Sorbonne University)
+ Expertise: Computational pathology and multimodal learning
+ 
+• [Confirmed]  Tim Pagliaro (Imaging Scientist, Perspectum Ltd)
+ Expertise: Quantitative multi-parametric MRI for cardio-metabolic  imaging, body composition, fibrosis metrics; AI/ML integration for clinical trial phenotyping 
+ 
+• [Confirmed] Prof. Caroline Uhler (MIT) 
+Expertise: Causal inference and generative modeling for genomics and biomedical imaging; co-director of the Eric and Wendy Schmidt Center at the Broad Institute
+
+• [Confirmed] Dr. Simona Cristea (Dana-Farber Cancer Institute / Harvard T.H. Chan School of Public Health)
+Expertise: Spatial epigenomics, tumor microenvironment, multi-modal integration
+
+• [Confirmed] Dr. Weimiao Yu (Institute of Molecular and Cell Biology, A*STAR, Singapore)
+Expertise: Spatial transcriptomics, tissue architecture, and integrative cell imaging
+
+• [Confirmed] Dr. Stefan Bogdanovic (Senior Research Scientist, SandboxAQ)
+Expertise: Quantum sensing for biomedical applications, including diamond-based nanoscale sensors; quantum-enhanced diagnostics and precision medicine.
+
+
+
+

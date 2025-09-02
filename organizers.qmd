@@ -1,0 +1,21 @@
+### Organization Team 
+
+The organizing committee consists of individuals across industry and academia with significant domain expertise and experience. 
+
+#### Ilknur Icke, PhD, Director of Applied Machine Learning, Bayer
+
+[Ilknur](https://www.linkedin.com/in/ilknuricke/) Icke is a Director in the External and Exploratory Innovation group at Novo Nordisk, responsible for driving strategic collaborations between external and internal teams to pioneer new opportunities in digital science, data, and AI. Her interests lie in complex systems, at the intersection of sensing and computational modeling. For over a decade in pharmaceutical R&D, she has developed capabilities in modeling and simulation for PK/PD analysis, molecular imaging for neuroscience and oncology, cellular profiling and multi-omics data analysis, and generative modeling for de-novo compound design. She has contributed to various publications and patents in biomedical R&D. She also serves as a reviewer for the MICCAI conference.
+
+#### Chao-Hui Huang, PhD, PhD, Director at Oncology Research Division, Pfizer
+
+Chao-Hui Huang is a Director at Pfizer Oncology Research Division, responsible for enabling artificial intelligence and digital image analysis technologies for supporting computational biological research. His experiences include spatial multi-omics, digital pathology, and medical image analysis. In addition, he also has a track of exploring advanced applications of large language models for assisting computational biology and drug discovery. Within his 27 years of experience, he has published 39 papers in various conferences and journals, 4 patents and 1 book chapter in the areas of artificial intelligence and machine learning-related biomedical research.
+
+
+#### Ming Tommy Tang, PhD, Director of Bioinformatics, AstraZeneca
+
+[Tommy Tang](https://www.linkedin.com/in/%F0%9F%8E%AF-ming-tommy-tang-40650014/) is a Director of Bioinformatics at Astrazeneca in the Oncology Data Science and AI division. He has over 12 years of experience in genomics, epigenomics, and single-cell transcriptomics. He earned his PhD from the University of Florida, trained at MD Anderson, and held non-tenure-track faculty roles at Harvard and Dana-Farber. At AstraZeneca, he leads epigenetics bioinformatics for oncology. A former wet-lab biologist, Tommy is passionate about open science and helping biologists gain computational skills [ https://divingintogeneticsandgenomics.com/].
+
+
+#### Mahnaz Maddah, PhD, Director of Machine Learning, Broad Institute
+
+Mahnaz Maddah is the Director of Machine Learning for Health (ML4H) and a principal investigator at the Broad Institute of MIT and Harvard. Dr. Maddah leads the Machine Learning for Health (ML4H) team, which, in close collaboration with clinicians, develops AI/ML methods for improving health outcomes using clinical data and genomics. Dr. Maddah has twenty years of experience in research and industry, with multiple patents and AI products for biomedical applications.  Dr. Maddah has served as a principal investigator on multiple grants from the NIH, FDA, and the American Heart Association, and holds a PhD in Electrical Engineering and Computer Science from MIT’s Computer Science and Artificial Intelligence Laboratory (CSAIL).

@@ -1,0 +1,18 @@
+---
+title: "CALL FOR POSTER PRESENTATIONS"
+---
+
+### We welcome:
+
+1.Original research: Technical advances in cross-modal modeling (e.g., joint embeddings, causal inference and biological reasoning).  
+2.Applications: Demonstrations of spatial–imaging integrated AI in drug discovery.  
+3.Resources: New datasets, challenges, benchmarks, or best-practice infrastructures.  
+4.Position and survey papers: Reviews of barriers and opportunities in multi-modal therapeutic AI.
+
+
+### Outcomes & Vision
+
+•Establish a community hub for spatial‑imaging AI in disease understanding, drug discovery, and personalized medicine.  
+•Plan for a public benchmark challenge for multi-modal therapeutic prediction.  
+•Initiate discussions on a white paper summarizing consensus on data standards, ethical considerations, and research directions.  
+• Inspire follow-up collaborations—from joint grant proposals to shared toolkits

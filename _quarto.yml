@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "SPARTA — Spatial Reasoning and Therapeutics with AI : From Omics to Imaging"
+  sidebar:
+    background: primary
+    # logo: "images/logo.png"
+    pinned: true
+    align: center
+    tools:
+      - icon: github
+        href: https://github.com/crazyhottommy/charting_human_biology_using_AI
+        text: GitHub
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Home
+      - href: schedule.qmd
+        text: Schedule
+      - href: materials.qmd
+        text: Call for poster presentations
+      - href: organizers.qmd
+        text: Orgnaizers
+      - href: https://github.com/crazyhottommy/charting_human_biology_using_AI/discussions
+        text: Forum
+
+format:
+  html:
+    theme: cosmo
+    # css: styles.css
+    toc: true
+
+execute:
+  freeze: auto
+

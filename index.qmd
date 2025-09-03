@@ -8,7 +8,7 @@ title: "SPARTA — Spatial Reasoning and Therapeutics with AI : From Omics to Im
 
 ### Time
 
-Jan 26th, 2026, 9am - 5pm
+Jan 26/27 th, 2026, 9am - 5pm
 
 ![](images/aaai_workshop.png)
 
@@ -72,20 +72,12 @@ We are planning for a full-day workshop consisting of the following activities:
 • [Confirmed] Prof. Daniel Racoceanu (Sorbonne University)
  Expertise: Computational pathology and multimodal learning
  
-• [Confirmed]  Tim Pagliaro (Imaging Scientist, Perspectum Ltd)
- Expertise: Quantitative multi-parametric MRI for cardio-metabolic  imaging, body composition, fibrosis metrics; AI/ML integration for clinical trial phenotyping 
- 
-• [Confirmed] Prof. Caroline Uhler (MIT) 
-Expertise: Causal inference and generative modeling for genomics and biomedical imaging; co-director of the Eric and Wendy Schmidt Center at the Broad Institute
-
 • [Confirmed] Dr. Simona Cristea (Dana-Farber Cancer Institute / Harvard T.H. Chan School of Public Health)
 Expertise: Spatial epigenomics, tumor microenvironment, multi-modal integration
 
 • [Confirmed] Dr. Weimiao Yu (Institute of Molecular and Cell Biology, A*STAR, Singapore)
 Expertise: Spatial transcriptomics, tissue architecture, and integrative cell imaging
 
-• [Confirmed] Dr. Stefan Bogdanovic (Senior Research Scientist, SandboxAQ)
-Expertise: Quantum sensing for biomedical applications, including diamond-based nanoscale sensors; quantum-enhanced diagnostics and precision medicine.
 
 
 

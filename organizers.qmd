@@ -2,7 +2,7 @@
 
 The organizing committee consists of individuals across industry and academia with significant domain expertise and experience. 
 
-#### Ilknur Icke, PhD, Director of Applied Machine Learning, Bayer
+#### Ilknur Icke, PhD, Director, External Innovation, Data & AI, Novo Nordisk
 
 [Ilknur](https://www.linkedin.com/in/ilknuricke/) Icke is a Director in the External and Exploratory Innovation group at Novo Nordisk, responsible for driving strategic collaborations between external and internal teams to pioneer new opportunities in digital science, data, and AI. Her interests lie in complex systems, at the intersection of sensing and computational modeling. For over a decade in pharmaceutical R&D, she has developed capabilities in modeling and simulation for PK/PD analysis, molecular imaging for neuroscience and oncology, cellular profiling and multi-omics data analysis, and generative modeling for de-novo compound design. She has contributed to various publications and patents in biomedical R&D. She also serves as a reviewer for the MICCAI conference.
 

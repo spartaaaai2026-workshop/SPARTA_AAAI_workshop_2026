@@ -11,7 +11,7 @@ website:
     align: center
     tools:
       - icon: github
-        href: https://github.com/crazyhottommy/charting_human_biology_using_AI
+        href: https://github.com/spartaaaai2026-workshop/SPARTA_AAAI_workshop_2026
         text: GitHub
     style: docked
     contents:
@@ -23,7 +23,7 @@ website:
         text: Call for poster presentations
       - href: organizers.qmd
         text: Orgnaizers
-      - href: https://github.com/crazyhottommy/charting_human_biology_using_AI/discussions
+      - href: https://github.com/spartaaaai2026-workshop/SPARTA_AAAI_workshop_2026/discussions
         text: Forum
 
 format:

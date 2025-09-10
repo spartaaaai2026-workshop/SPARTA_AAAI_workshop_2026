@@ -23,8 +23,7 @@ website:
         text: Call for poster presentations
       - href: organizers.qmd
         text: Organizers
-      - href: https://github.com/spartaaaai2026-workshop/SPARTA_AAAI_workshop_2026/discussions
-        text: Forum
+    
 
 format:
   html:

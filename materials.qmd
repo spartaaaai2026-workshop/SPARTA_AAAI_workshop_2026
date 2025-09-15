@@ -1,5 +1,5 @@
 ---
-title: "CALL FOR POSTER PRESENTATIONS"
+title: "CALL FOR Submissions"
 ---
 
 ### We welcome:
@@ -15,4 +15,4 @@ title: "CALL FOR POSTER PRESENTATIONS"
 •Establish a community hub for spatial‑imaging AI in disease understanding, drug discovery, and personalized medicine.  
 •Plan for a public benchmark challenge for multi-modal therapeutic prediction.  
 •Initiate discussions on a white paper summarizing consensus on data standards, ethical considerations, and research directions.  
-• Inspire follow-up collaborations—from joint grant proposals to shared toolkits
+•Inspire follow-up collaborations—from joint grant proposals to shared toolkits

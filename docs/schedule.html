@@ -1,32 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPARTA 2026 Interactive Program</title>
-    <!-- Tailwind CSS -->
+    <meta charset="utf-8">
+    <meta name="generator" content="quarto-1.7.31">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <title>Schedule – SPARTA</title>
+
+    <!-- --- 1. DASHBOARD LIBRARIES (Required for the Schedule View) --- -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- --- 2. QUARTO SYSTEM STYLES (Required for the Sidebar/Layout) --- -->
     <style>
-        /* Chosen Palette: "Scientific Clarity" - Cool Blues, Slate Grays, and Teal Accents */
+        code{white-space: pre-wrap;}
+        span.smallcaps{font-variant: small-caps;}
+        div.columns{display: flex; gap: min(4vw, 1.5em);}
+        div.column{flex: auto; overflow-x: auto;}
+        div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+        ul.task-list{list-style: none;}
+        ul.task-list li input[type="checkbox"] {
+          width: 0.8em;
+          margin: 0 0.8em 0.2em -1em; 
+          vertical-align: middle;
+        }
+    </style>
+
+    <!-- Quarto Scripts (Assumes these exist in your site_libs folder) -->
+    <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+    <script src="site_libs/clipboard/clipboard.min.js"></script>
+    <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+    <script src="site_libs/quarto-search/fuse.min.js"></script>
+    <script src="site_libs/quarto-search/quarto-search.js"></script>
+    <meta name="quarto:offset" content="./">
+    <script src="site_libs/quarto-html/quarto.js" type="module"></script>
+    <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+    <script src="site_libs/quarto-html/popper.min.js"></script>
+    <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+    <script src="site_libs/quarto-html/anchor.min.js"></script>
+    <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+    <link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+    <script src="site_libs/bootstrap/bootstrap.min.js"></script>
+    <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+    <link href="site_libs/bootstrap/bootstrap-79df7ed5347781c1339259261daa236f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+    <script id="quarto-search-options" type="application/json">{
+      "location": "sidebar",
+      "copy-button": false,
+      "collapse-after": 3,
+      "panel-placement": "start",
+      "type": "textbox",
+      "limit": 50,
+      "keyboard-shortcut": ["f", "/", "s"],
+      "language": {
+        "search-no-results-text": "No results",
+        "search-matching-documents-text": "matching documents",
+        "search-label": "Search"
+      }
+    }</script>
+
+    <!-- --- 3. CUSTOM DASHBOARD CSS --- -->
+    <style>
+        /* Scoped styles to ensure dashboard looks right inside Quarto */
         :root {
-            --primary: #2563eb; /* Blue 600 */
-            --secondary: #0f172a; /* Slate 900 */
-            --accent: #0d9488; /* Teal 600 */
-            --bg-light: #f8fafc; /* Slate 50 */
+            --primary: #2563eb; 
+            --secondary: #0f172a; 
+            --accent: #0d9488; 
+            --bg-light: #f8fafc; 
             --card-bg: #ffffff;
-            --text-main: #334155; /* Slate 700 */
+            --text-main: #334155; 
         }
         
-        body {
+        /* Apply Inter font specifically to the dashboard content wrapper */
+        .dashboard-wrapper {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
             color: var(--text-main);
         }
 
@@ -38,21 +87,6 @@
             margin: 0 auto;
         }
 
-        /* Custom Scrollbar for nicer feel */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
-
         .fade-in {
             animation: fadeIn 0.5s ease-in-out;
         }
@@ -61,335 +95,449 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-    </style>
-    
-    <!-- Application Structure Plan: 
-         1. Header: Quick context (Title, Date, Location).
-         2. "At a Glance": Dashboard row with key stats (Chart.js) and Theme Pills.
-         3. Main Content Area (Two Columns on Desktop):
-            - Left Col: "The Schedule" - Vertical interactive timeline.
-            - Right Col: "Submission Explorer" - Filterable list of accepted papers with details.
-         Why? This structure allows attendees to switch between "Where do I need to be?" (Schedule) and "What is this science about?" (Explorer).
-    -->
-</head>
-<body class="antialiased">
-
-    <!-- Navigation / Header -->
-    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-blue-600 text-white p-2 rounded-lg font-bold text-xl tracking-tighter">SPARTA</div>
-                <div class="hidden md:block">
-                    <h1 class="text-lg font-semibold leading-tight">Spatial Reasoning & Therapeutics AI</h1>
-                    <p class="text-xs text-slate-400">From Omics to Imaging</p>
-                </div>
-            </div>
-            <div class="text-right text-sm text-slate-300">
-                <p><i class="fa-regular fa-calendar mr-2"></i>Jan 26, 2026</p>
-                <p class="hidden sm:block"><i class="fa-solid fa-location-dot mr-2"></i>Singapore EXPO</p>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-
-        <!-- Section 1: Dashboard Overview -->
-        <section id="overview" class="fade-in">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Stats Card -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 col-span-1 md:col-span-1">
-                    <h2 class="text-lg font-bold text-slate-800 mb-4">Program Composition</h2>
-                    <!-- Visualization: Donut Chart for Acceptance Breakdown -->
-                    <div class="chart-container">
-                        <canvas id="acceptanceChart"></canvas>
-                    </div>
-                    <div class="text-center mt-2 text-sm text-slate-500">
-                        Total Submissions: <span class="font-bold text-slate-800">18</span>
-                    </div>
-                </div>
-
-                <!-- Workshop Goals / Themes -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 flex flex-col justify-center">
-                    <div class="mb-4">
-                        <h2 class="text-lg font-bold text-slate-800">Workshop Mission</h2>
-                        <p class="text-slate-600 mt-1 text-sm">
-                            To advance therapeutic development by moving beyond descriptive spatial analysis to 
-                            <span class="text-blue-600 font-semibold">mechanistic understanding</span> and 
-                            <span class="text-teal-600 font-semibold">causal reasoning</span>.
-                        </p>
-                    </div>
-                    <div>
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Core Themes</h3>
-                        <div class="flex flex-wrap gap-2" id="themePillsStatic">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: Dual Column View (Schedule + Paper Explorer) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <!-- Left Column: Interactive Schedule (40% width) -->
-            <section class="lg:col-span-5 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-2xl font-bold text-slate-800">Agenda</h2>
-                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">09:00 - 17:00</span>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div id="scheduleContainer" class="divide-y divide-slate-100">
-                        <!-- Schedule Items Generated by JS -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- Right Column: Submission Explorer (60% width) -->
-            <section class="lg:col-span-7 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <h2 class="text-2xl font-bold text-slate-800">Submission Gallery</h2>
-                    <!-- Filters -->
-                    <div class="flex gap-2 text-sm">
-                        <button class="filter-btn active px-3 py-1.5 rounded-lg bg-slate-800 text-white transition-colors" data-filter="all">All</button>
-                        <button class="filter-btn px-3 py-1.5 rounded-lg bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors" data-filter="Oral">Oral</button>
-                        <button class="filter-btn px-3 py-1.5 rounded-lg bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors" data-filter="Poster">Poster</button>
-                    </div>
-                </div>
-                
-                <!-- Dynamic Paper Grid -->
-                <div id="papersGrid" class="grid grid-cols-1 gap-4">
-                    <!-- Paper Cards Generated by JS -->
-                </div>
-            </section>
-
-        </div>
-
-    </main>
-
-    <footer class="bg-slate-50 border-t border-slate-200 mt-12 py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-sm">
-            <p class="mb-2 font-semibold">Organizers & Program Committee</p>
-            <p>Ilknur Icke • Chao-Hui Huang  • Ming Tommy Tang  • Alex Drong • Mahnaz Maddah 
-        </div>
-    </footer>
-
-    <!-- Data & Logic -->
-    <script>
-        // --- DATA STORAGE ---
         
-        const themes = [
-            { id: 'spatial-omics', label: 'Spatial Multi-Omics', color: 'bg-purple-100 text-purple-800' },
-            { id: 'imaging', label: 'Omics to Imaging', color: 'bg-blue-100 text-blue-800' },
-            { id: 'causal', label: 'Causal & Mechanistic AI', color: 'bg-teal-100 text-teal-800' },
-            { id: 'therapeutic', label: 'Therapeutic Reasoning', color: 'bg-rose-100 text-rose-800' },
-            { id: 'evaluation', label: 'Evaluation & Accountability', color: 'bg-amber-100 text-amber-800' }
-        ];
-
-        const scheduleData = [
-            { time: "09:00", title: "Welcome & Opening Remarks", type: "admin", detail: "Workshop Organizers" },
-            { time: "09:10", title: "Session 1: Methodological Foundations", type: "session", detail: "Chair: Chao-Hui Huang", content: [
-                { time: "09:10", type: "Keynote", title: "Computational Pathology & Multimodal Learning", speaker: "Dr. Daniel Racoceanu" },
-                { time: "09:45", type: "Oral", title: "Explorations of spatial transcriptomics on brain samples for biological understanding", speaker: "Submission #7" },
-                { time: "10:05", type: "Oral", title: "STProtein: predicting spatial protein expression from multi-omics data", speaker: "Submission #10" }
-            ]},
-            { time: "10:25", title: "Coffee Break", type: "break", detail: "25 min" },
-            { time: "10:50", title: "Session 2: Spatial Omics & Mechanism", type: "session", detail: "Chair: Ilknur Icke", content: [
-                { time: "10:50", type: "Keynote", title: "Spatial Transcriptomics & Imaging", speaker: "Dr. Weimiao Yu" },
-                { time: "11:25", type: "Keynote", title: "Spatial Epigenomics & Oncology", speaker: "Dr. Simona Cristea" },
-                { time: "12:00", type: "Oral", title: "Spatial profiling reveals molecular determinants of CD8+ dynamics during chemo-immunotherapy in MSS colon cancer", speaker: "Submission #12" }
-            ]},
-            { time: "12:20", title: "Lunch & Poster Session", type: "break", detail: "75 min - Authors present 13:00-13:35" },
-            { time: "13:35", title: "Session 3: Clinical Translation", type: "session", detail: "Chair: Ming Tommy Tang", content: [
-                { time: "13:35", type: "Keynote", title: "Multi-modal Imaging & Clinical Trials", speaker: "Tim Pagliaro" },
-                { time: "14:10", type: "Oral", title: "NeuroHydra: A Generalizable DINOv3-Mamba Framework for Multimodal Biomedical AI", speaker: "Submission #9" },
-                { time: "14:30", type: "Oral", title: "From AUC to Accountability: Metric Choices, Social Norms, and the Deployment of Therapeutic AI", speaker: "Submission #19" }
-            ]},
-            { time: "14:50", title: "Coffee Break", type: "break", detail: "25 min" },
-            { time: "15:15", title: "Session 4: Emerging Tech & Trials", type: "session", detail: "Chair: Ilknur Icke", content: [
-                { time: "15:15", type: "Keynote", title: "Biostatistics, AI & Clinical Trials", speaker: "Dr. Louise Liu" },
-                { time: "15:50", type: "Keynote", title: "Quantum Sensing for Drug Development", speaker: "Dr. Romana Schirhagl" }
-            ]},
-            { time: "16:25", title: "Panel Discussion", type: "session", detail: "From Spatial Data to Patient Impact" },
-            { time: "16:55", title: "Closing Remarks", type: "admin", detail: "" }
-        ];
-
-        const papersData = [
-            // Oral Presentations
-            { id: 12, title: "Spatial profiling reveals molecular determinants of CD8+ dynamics during chemo-immunotherapy in MSS colon cancer", type: "Oral", score: 8.0, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best Clinical Application. Uses spatio-temporal omics (pre/on-treatment) to find mechanistic immunotherapy determinants." },
-            { id: 10, title: "STProtein: predicting spatial protein expression from multi-omics data", type: "Oral", score: 7.8, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best AI Method for Spatial Omics. A novel GNN framework solving the critical problem of spatial proteomics scarcity." },
-            { id: 19, title: "From AUC to Accountability: Metric Choices, Social Norms, and the Deployment of Therapeutic AI", type: "Oral", score: 8.5, scoreColor: "text-green-600", theme: "evaluation", rationale: "Best Evaluation Framework. A critical technical-normative analysis of metrics for therapeutic AI." },
-            { id: 9, title: "NeuroHydra: A Generalizable DINOv3-Mamba Framework for Multimodal Biomedical AI", type: "Oral", score: 9.0, scoreColor: "text-green-600", theme: "imaging", rationale: "Best Imaging AI Method. Novel framework linking 2D vision models to 3D MRI for therapeutic prediction." },
-            { id: 7, title: "Explorations of spatial transcriptomics on brain samples for biological understanding", type: "Oral", score: 7.5, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best Platform Benchmarking. A practical, timely comparison of Xenium vs. Visium HD on human brain tissue." },
-
-            // Poster Presentations (Group 1)
-            { id: 18, title: "Demo: A Unified Lesion Detection and Segmentation Pipeline Across Diverse Medical Imaging Modalities", type: "Poster", score: 7.0, theme: "imaging", rationale: "Practical pipeline for lesion detection across CT, X-ray, and Echo using foundation models." },
-            { id: 13, title: "TGUMIAD: Text-Guided Unified Model for Medical Image Anomaly Detection", type: "Poster", score: 7.0, theme: "imaging", rationale: "Unified vision-language anomaly detection for MRI/CT/OCT using CLIP." },
-            { id: 11, title: "Expanding Gene Expression profile in Targeted Spatial Transcriptomics through scRNA-seq data integration", type: "Poster", score: 7.0, theme: "spatial-omics", rationale: "Effective gene expression imputation method for targeted spatial platforms." },
-            
-            // Poster Presentations (Group 2)
-            { id: 16, title: "PathSymetic: Neuro-Symbolic Causal Hypothesis Generation for Mechanistic Pathway Discovery in Genomic Systems", type: "Poster", score: 7.0, theme: "causal", rationale: "High-quality Causal AI framework. Non-spatial, but highly relevant methodology for therapeutic reasoning." },
-            { id: 17, title: "Demo: Combining Polygenic Risk and EHR Survival Models of Cardiac Patients in the Indian Context via Knowledge Distillation", type: "Poster", score: 6.2, theme: "therapeutic", rationale: "Novel integration of genomics and EHR for risk prediction. Non-spatial, but strong therapeutic relevance." },
-            { id: 6, title: "Dynamic Consistency Reveals Predictable Genes in Cross-Cell Type Temporal scRNA-Seq Data", type: "Poster", score: 6.5, theme: "causal", rationale: "Novel metric for temporal dynamics in gene expression." },
-            { id: 14, title: "Improving Local Connectivity in Sparse and Rigid Graph Constructions", type: "Poster", score: 6.0, theme: "therapeutic", rationale: "Foundational geometric GNN method for molecular-scale spatial reasoning (protein docking)." },
-            { id: 4, title: "CSLAN: Cross-Species Latent Alignment Network for Trauma-Related Cell-Type Classification", type: "Poster", score: 6.0, theme: "spatial-omics", rationale: "Strong transfer learning method for omics, extendable to spatial contexts." },
-            { id: 5, title: "Med-ICE: Enhancing Factual Accuracy in Medical AI through Autonomous Multi-Agent Consensus", type: "Poster", score: 6.8, theme: "evaluation", rationale: "Focuses on AI reliability and factuality, critical for trusted clinical systems." },
-            { id: 3, title: "Translational single-cell research enabled by Singleron’s end-to-end research platform", type: "Poster", score: 6.0, theme: "therapeutic", rationale: "Focuses on translational workflows." }
-        ];
-
-        // --- INITIALIZATION & RENDERING ---
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderChart();
-            renderThemes();
-            renderSchedule();
-            renderPapers('all');
-            setupFilters();
-        });
-
-        // 1. Chart.js Render
-        function renderChart() {
-            const ctx = document.getElementById('acceptanceChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Oral Presentation', 'Poster Presentation', 'Rejected'],
-                    datasets: [{
-                        data: [5, 10, 3],
-                        backgroundColor: ['#2563eb', '#0d9488', '#cbd5e1'], // Blue, Teal, Gray
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
-                    },
-                    cutout: '70%'
-                }
-            });
+        /* Conflict Fix: Reset list styles for sidebar so Tailwind doesn't mess them up */
+        .sidebar-menu-container ul {
+            list-style: none;
+            padding-left: 0;
         }
+    </style>
+</head>
 
-        // 2. Render Static Theme Pills
-        function renderThemes() {
-            const container = document.getElementById('themePillsStatic');
-            themes.forEach(t => {
-                const pill = document.createElement('span');
-                pill.className = `px-2 py-1 rounded text-xs font-medium ${t.color}`;
-                pill.textContent = t.label;
-                container.appendChild(pill);
-            });
-        }
+<body class="nav-sidebar docked quarto-light">
 
-        // 3. Render Schedule
-        function renderSchedule() {
-            const container = document.getElementById('scheduleContainer');
-            scheduleData.forEach(item => {
-                const div = document.createElement('div');
-                div.className = "p-4 hover:bg-slate-50 transition-colors";
-                
-                let contentHTML = '';
-                if (item.content) {
-                    const subItems = item.content.map(sub => `
-                        <div class="flex gap-3 mt-2 ml-2 pl-3 border-l-2 border-slate-200 text-sm">
-                            <span class="font-mono text-slate-400 w-10 shrink-0">${sub.time}</span>
-                            <div>
-                                <span class="font-semibold text-slate-700 block">${sub.title}</span>
-                                <span class="text-slate-500 text-xs">${sub.type} • ${sub.speaker}</span>
-                            </div>
+<div id="quarto-search-results"></div>
+  
+  <!-- HEADER -->
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./schedule.html">Schedule</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- MAIN CONTAINER -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="pt-lg-2 mt-2 text-center sidebar-header">
+        <div class="sidebar-title mb-0 py-0">
+          <a href="./">SPARTA — Spatial Reasoning and Therapeutics with AI</a> 
+            <div class="sidebar-tools-main">
+        <a href="https://github.com/spartaaaai2026-workshop/SPARTA_AAAI_workshop_2026/" title="GitHub" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
+    </div>
+        </div>
+          </div>
+            <div class="mt-2 flex-shrink-0 align-items-center">
+            <div class="sidebar-search">
+            <div id="quarto-search" class="" title="Search"></div>
+            </div>
+            </div>
+        <div class="sidebar-menu-container"> 
+        <ul class="list-unstyled mt-1">
+            <li class="sidebar-item">
+                <div class="sidebar-item-container"> 
+                <a href="./index.html" class="sidebar-item-text sidebar-link">
+                <span class="menu-text">Home</span></a>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-item-container"> 
+                <!-- ACTIVE LINK for Schedule -->
+                <a href="./schedule.html" class="sidebar-item-text sidebar-link active">
+                <span class="menu-text">Schedule</span></a>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-item-container"> 
+                <a href="./materials.html" class="sidebar-item-text sidebar-link">
+                <span class="menu-text">Call for submissions</span></a>
+                </div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-item-container"> 
+                <a href="./organizers.html" class="sidebar-item-text sidebar-link">
+                <span class="menu-text">Organizers</span></a>
+                </div>
+            </li>
+        </ul>
+        </div>
+    </nav>
+    <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    
+    <!-- --- DASHBOARD CONTENT AREA --- -->
+    <main class="content dashboard-wrapper" id="quarto-document-content">
+        
+        <!-- Header from Dashboard -->
+        <header class="mb-8 border-b border-slate-200 pb-4">
+            <h1 class="text-3xl font-bold text-slate-900">Interactive Program</h1>
+            <div class="flex items-center gap-4 text-sm text-slate-500 mt-2">
+                <p><i class="fa-regular fa-calendar mr-2"></i>Jan 26, 2026</p>
+                <p><i class="fa-solid fa-location-dot mr-2"></i>Singapore EXPO</p>
+            </div>
+        </header>
+
+        <div class="space-y-8">
+
+            <!-- Section 1: Dashboard Overview -->
+            <section id="overview" class="fade-in">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Stats Card -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 col-span-1 md:col-span-1">
+                        <h2 class="text-lg font-bold text-slate-800 mb-4">Program Composition</h2>
+                        <div class="chart-container">
+                            <canvas id="acceptanceChart"></canvas>
                         </div>
-                    `).join('');
-                    contentHTML = `<div class="mt-2">${subItems}</div>`;
-                }
-
-                let badgeColor = item.type === 'session' ? 'bg-blue-100 text-blue-700' : 
-                                 item.type === 'break' ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-600';
-
-                div.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex gap-3">
-                            <span class="font-mono font-medium text-slate-500 pt-0.5">${item.time}</span>
-                            <div>
-                                <h3 class="font-bold text-slate-800">${item.title}</h3>
-                                ${item.detail ? `<p class="text-xs text-slate-500 mt-0.5">${item.detail}</p>` : ''}
-                            </div>
+                        <div class="text-center mt-2 text-sm text-slate-500">
+                            Total Submissions: <span class="font-bold text-slate-800">18</span>
                         </div>
-                        <span class="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded ${badgeColor}">${item.type}</span>
                     </div>
-                    ${contentHTML}
-                `;
-                container.appendChild(div);
-            });
-        }
 
-        // 4. Render Papers with Filtering
-        function renderPapers(filterType) {
-            const container = document.getElementById('papersGrid');
-            container.innerHTML = ''; // Clear current
-            
-            const filtered = filterType === 'all' ? papersData : papersData.filter(p => p.type === filterType);
+                    <!-- Workshop Goals / Themes -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 flex flex-col justify-center">
+                        <div class="mb-4">
+                            <h2 class="text-lg font-bold text-slate-800">Workshop Mission</h2>
+                            <p class="text-slate-600 mt-1 text-sm">
+                                To advance therapeutic development by moving beyond descriptive spatial analysis to 
+                                <span class="text-blue-600 font-semibold">mechanistic understanding</span> and 
+                                <span class="text-teal-600 font-semibold">causal reasoning</span>.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Core Themes</h3>
+                            <div class="flex flex-wrap gap-2" id="themePillsStatic">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            filtered.forEach(p => {
-                const themeObj = themes.find(t => t.id === p.theme);
-                const card = document.createElement('div');
-                card.className = "bg-white p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow fade-in";
+            <!-- Section 2: Dual Column View (Schedule + Paper Explorer) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
-                let scoreBadge = '';
-                if (p.score) {
-                    // DO NOT RENDER THE SCORE OR STARS
-                    // Instead, render just the "Invited" text if score is null, or nothing if score exists but we want to hide it.
-                    // The user request was "remove stars".
-                    // To be safe and clean, I will remove the visual representation of the score entirely for this request,
-                    // or just keep the "Invited" badge for #3.
+                <!-- Left Column: Interactive Schedule -->
+                <section class="lg:col-span-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold text-slate-800">Agenda</h2>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">09:00 - 17:00</span>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div id="scheduleContainer" class="divide-y divide-slate-100">
+                            <!-- Schedule Items Generated by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Column: Submission Explorer -->
+                <section class="lg:col-span-7 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <h2 class="text-2xl font-bold text-slate-800">Submission Gallery</h2>
+                        <!-- Filters -->
+                        <div class="flex gap-2 text-sm">
+                            <button class="filter-btn active px-3 py-1.5 rounded-lg bg-slate-800 text-white transition-colors" data-filter="all">All</button>
+                            <button class="filter-btn px-3 py-1.5 rounded-lg bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors" data-filter="Oral">Oral</button>
+                            <button class="filter-btn px-3 py-1.5 rounded-lg bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors" data-filter="Poster">Poster</button>
+                        </div>
+                    </div>
                     
-                    // User said "remove ratings (stars)". I will remove the score display completely.
-                    scoreBadge = ''; 
-                } else {
-                    scoreBadge = `<span class="text-xs font-bold text-slate-400" title="Invited">Invited</span>`;
-                }
+                    <!-- Dynamic Paper Grid -->
+                    <div id="papersGrid" class="grid grid-cols-1 gap-4">
+                        <!-- Paper Cards Generated by JS -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main> 
+</div> 
 
-                const typeColor = p.type === 'Oral' ? 'text-blue-600 bg-blue-50' : 'text-teal-600 bg-teal-50';
+<!-- --- QUARTO SCRIPTS (Boilerplate to make sidebar work) --- -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    
+    // FIX: Check if AnchorJS is defined before using it
+    if (window.AnchorJS) {
+        const anchorJS = new window.AnchorJS();
+        anchorJS.options = {
+          placement: 'right',
+          icon: icon
+        };
+        anchorJS.add('.anchored');
+    }
 
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="${themeObj.color} text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">${themeObj.label}</span>
-                        ${scoreBadge}
-                    </div>
-                    <h4 class="font-bold text-slate-800 mb-1 leading-snug">${p.title}</h4>
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="text-xs font-bold px-2 py-0.5 rounded ${typeColor}">${p.type}</span>
-                        <span class="text-xs text-slate-400 font-mono">ID: #${p.id}</span>
-                    </div>
-                    <div class="bg-slate-50 p-3 rounded text-sm text-slate-600 border border-slate-100">
-                        <strong class="text-slate-800 text-xs uppercase block mb-1">Selection Rationale</strong>
-                        ${p.rationale}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      const button = e.trigger;
+      button.blur();
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
 
-        // 5. Setup Interactive Filters
-        function setupFilters() {
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    // Update UI active state
-                    buttons.forEach(b => {
-                        b.classList.remove('bg-slate-800', 'text-white');
-                        b.classList.add('bg-slate-200', 'text-slate-600');
-                    });
-                    e.target.classList.remove('bg-slate-200', 'text-slate-600');
-                    e.target.classList.add('bg-slate-800', 'text-white');
+    // FIX: Check if ClipboardJS is defined before using it
+    if (window.ClipboardJS) {
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+    }
+  });
+</script>
 
-                    // Render
-                    renderPapers(e.target.dataset.filter);
+<!-- --- DASHBOARD LOGIC (The custom JS for charts/schedule) --- -->
+<script>
+    // --- DATA ---
+    const themes = [
+        { id: 'spatial-omics', label: 'Spatial Multi-Omics', color: 'bg-purple-100 text-purple-800' },
+        { id: 'imaging', label: 'Omics to Imaging', color: 'bg-blue-100 text-blue-800' },
+        { id: 'causal', label: 'Causal & Mechanistic AI', color: 'bg-teal-100 text-teal-800' },
+        { id: 'therapeutic', label: 'Therapeutic Reasoning', color: 'bg-rose-100 text-rose-800' },
+        { id: 'evaluation', label: 'Evaluation & Accountability', color: 'bg-amber-100 text-amber-800' }
+    ];
+
+    const scheduleData = [
+        { time: "09:00", title: "Welcome & Opening Remarks", type: "admin", detail: "Workshop Organizers" },
+        { time: "09:10", title: "Session 1: Methodological Foundations", type: "session", detail: "Chair: Chao-Hui Huang", content: [
+            { time: "09:10", type: "Keynote", title: "Computational Pathology & Multimodal Learning", speaker: "Dr. Daniel Racoceanu" },
+            { time: "09:45", type: "Oral", title: "Explorations of spatial transcriptomics on brain samples for biological understanding", speaker: "Submission #7" },
+            { time: "10:05", type: "Oral", title: "STProtein: predicting spatial protein expression from multi-omics data", speaker: "Submission #10" }
+        ]},
+        { time: "10:25", title: "Coffee Break", type: "break", detail: "25 min" },
+        { time: "10:50", title: "Session 2: Spatial Omics & Mechanism", type: "session", detail: "Chair: Ilknur Icke", content: [
+            { time: "10:50", type: "Keynote", title: "Spatial Transcriptomics & Imaging", speaker: "Dr. Weimiao Yu" },
+            { time: "11:25", type: "Keynote", title: "Spatial Epigenomics & Oncology", speaker: "Dr. Simona Cristea" },
+            { time: "12:00", type: "Oral", title: "Spatial profiling reveals molecular determinants of CD8+ dynamics during chemo-immunotherapy in MSS colon cancer", speaker: "Submission #12" }
+        ]},
+        { time: "12:20", title: "Lunch & Poster Session", type: "break", detail: "75 min - Authors present 13:00-13:35" },
+        { time: "13:35", title: "Session 3: Clinical Translation", type: "session", detail: "Chair: Ming Tommy Tang", content: [
+            { time: "13:35", type: "Keynote", title: "Multi-modal Imaging & Clinical Trials", speaker: "Tim Pagliaro" },
+            { time: "14:10", type: "Oral", title: "NeuroHydra: A Generalizable DINOv3-Mamba Framework for Multimodal Biomedical AI", speaker: "Submission #9" },
+            { time: "14:30", type: "Oral", title: "From AUC to Accountability: Metric Choices, Social Norms, and the Deployment of Therapeutic AI", speaker: "Submission #19" }
+        ]},
+        { time: "14:50", title: "Coffee Break", type: "break", detail: "25 min" },
+        { time: "15:15", title: "Session 4: Emerging Tech & Trials", type: "session", detail: "Chair: Ilknur Icke", content: [
+            { time: "15:15", type: "Keynote", title: "Biostatistics, AI & Clinical Trials", speaker: "Dr. Louise Liu" },
+            { time: "15:50", type: "Keynote", title: "Quantum Sensing for Drug Development", speaker: "Dr. Romana Schirhagl" }
+        ]},
+        { time: "16:25", title: "Panel Discussion", type: "session", detail: "From Spatial Data to Patient Impact" },
+        { time: "16:55", title: "Closing Remarks", type: "admin", detail: "" }
+    ];
+
+    const papersData = [
+        { id: 12, title: "Spatial profiling reveals molecular determinants of CD8+ dynamics during chemo-immunotherapy in MSS colon cancer", type: "Oral", score: 8.0, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best Clinical Application. Uses spatio-temporal omics (pre/on-treatment) to find mechanistic immunotherapy determinants." },
+        { id: 10, title: "STProtein: predicting spatial protein expression from multi-omics data", type: "Oral", score: 7.8, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best AI Method for Spatial Omics. A novel GNN framework solving the critical problem of spatial proteomics scarcity." },
+        { id: 19, title: "From AUC to Accountability: Metric Choices, Social Norms, and the Deployment of Therapeutic AI", type: "Oral", score: 8.5, scoreColor: "text-green-600", theme: "evaluation", rationale: "Best Evaluation Framework. A critical technical-normative analysis of metrics for therapeutic AI." },
+        { id: 9, title: "NeuroHydra: A Generalizable DINOv3-Mamba Framework for Multimodal Biomedical AI", type: "Oral", score: 9.0, scoreColor: "text-green-600", theme: "imaging", rationale: "Best Imaging AI Method. Novel framework linking 2D vision models to 3D MRI for therapeutic prediction." },
+        { id: 7, title: "Explorations of spatial transcriptomics on brain samples for biological understanding", type: "Oral", score: 7.5, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best Platform Benchmarking. A practical, timely comparison of Xenium vs. Visium HD on human brain tissue." },
+        { id: 18, title: "Demo: A Unified Lesion Detection and Segmentation Pipeline Across Diverse Medical Imaging Modalities", type: "Poster", score: 7.0, theme: "imaging", rationale: "Practical pipeline for lesion detection across CT, X-ray, and Echo using foundation models." },
+        { id: 13, title: "TGUMIAD: Text-Guided Unified Model for Medical Image Anomaly Detection", type: "Poster", score: 7.0, theme: "imaging", rationale: "Unified vision-language anomaly detection for MRI/CT/OCT using CLIP." },
+        { id: 11, title: "Expanding Gene Expression profile in Targeted Spatial Transcriptomics through scRNA-seq data integration", type: "Poster", score: 7.0, theme: "spatial-omics", rationale: "Effective gene expression imputation method for targeted spatial platforms." },
+        { id: 16, title: "PathSymetic: Neuro-Symbolic Causal Hypothesis Generation for Mechanistic Pathway Discovery in Genomic Systems", type: "Poster", score: 7.0, theme: "causal", rationale: "High-quality Causal AI framework. Non-spatial, but highly relevant methodology for therapeutic reasoning." },
+        { id: 17, title: "Demo: Combining Polygenic Risk and EHR Survival Models of Cardiac Patients in the Indian Context via Knowledge Distillation", type: "Poster", score: 6.2, theme: "therapeutic", rationale: "Novel integration of genomics and EHR for risk prediction. Non-spatial, but strong therapeutic relevance." },
+        { id: 6, title: "Dynamic Consistency Reveals Predictable Genes in Cross-Cell Type Temporal scRNA-Seq Data", type: "Poster", score: 6.5, theme: "causal", rationale: "Novel metric for temporal dynamics in gene expression." },
+        { id: 14, title: "Improving Local Connectivity in Sparse and Rigid Graph Constructions", type: "Poster", score: 6.0, theme: "therapeutic", rationale: "Foundational geometric GNN method for molecular-scale spatial reasoning (protein docking)." },
+        { id: 4, title: "CSLAN: Cross-Species Latent Alignment Network for Trauma-Related Cell-Type Classification", type: "Poster", score: 6.0, theme: "spatial-omics", rationale: "Strong transfer learning method for omics, extendable to spatial contexts." },
+        { id: 5, title: "Med-ICE: Enhancing Factual Accuracy in Medical AI through Autonomous Multi-Agent Consensus", type: "Poster", score: 6.8, theme: "evaluation", rationale: "Focuses on AI reliability and factuality, critical for trusted clinical systems." },
+        { id: 3, title: "Translational single-cell research enabled by Singleron’s end-to-end research platform", type: "Poster", score: 6.0, theme: "therapeutic", rationale: "Focuses on translational workflows." }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderChart();
+        renderThemes();
+        renderSchedule();
+        renderPapers('all');
+        setupFilters();
+    });
+
+    // 1. Chart.js Render
+    function renderChart() {
+        const ctx = document.getElementById('acceptanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Oral Presentation', 'Poster Presentation', 'Rejected'],
+                datasets: [{
+                    data: [5, 10, 3],
+                    backgroundColor: ['#2563eb', '#0d9488', '#cbd5e1'], // Blue, Teal, Gray
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+
+    // 2. Render Static Theme Pills
+    function renderThemes() {
+        const container = document.getElementById('themePillsStatic');
+        themes.forEach(t => {
+            const pill = document.createElement('span');
+            pill.className = `px-2 py-1 rounded text-xs font-medium ${t.color}`;
+            pill.textContent = t.label;
+            container.appendChild(pill);
+        });
+    }
+
+    // 3. Render Schedule
+    function renderSchedule() {
+        const container = document.getElementById('scheduleContainer');
+        scheduleData.forEach(item => {
+            const div = document.createElement('div');
+            div.className = "p-4 hover:bg-slate-50 transition-colors";
+            
+            let contentHTML = '';
+            if (item.content) {
+                const subItems = item.content.map(sub => `
+                    <div class="flex gap-3 mt-2 ml-2 pl-3 border-l-2 border-slate-200 text-sm">
+                        <span class="font-mono text-slate-400 w-10 shrink-0">${sub.time}</span>
+                        <div>
+                            <span class="font-semibold text-slate-700 block">${sub.title}</span>
+                            <span class="text-slate-500 text-xs">${sub.type} • ${sub.speaker}</span>
+                        </div>
+                    </div>
+                `).join('');
+                contentHTML = `<div class="mt-2">${subItems}</div>`;
+            }
+
+            let badgeColor = item.type === 'session' ? 'bg-blue-100 text-blue-700' : 
+                             item.type === 'break' ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-600';
+
+            div.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div class="flex gap-3">
+                        <span class="font-mono font-medium text-slate-500 pt-0.5">${item.time}</span>
+                        <div>
+                            <h3 class="font-bold text-slate-800">${item.title}</h3>
+                            ${item.detail ? `<p class="text-xs text-slate-500 mt-0.5">${item.detail}</p>` : ''}
+                        </div>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded ${badgeColor}">${item.type}</span>
+                </div>
+                ${contentHTML}
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // 4. Render Papers with Filtering
+    function renderPapers(filterType) {
+        const container = document.getElementById('papersGrid');
+        container.innerHTML = ''; 
+        
+        const filtered = filterType === 'all' ? papersData : papersData.filter(p => p.type === filterType);
+
+        filtered.forEach(p => {
+            const themeObj = themes.find(t => t.id === p.theme);
+            const card = document.createElement('div');
+            card.className = "bg-white p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow fade-in";
+            
+            let scoreBadge = '';
+            if (!p.score) {
+                scoreBadge = `<span class="text-xs font-bold text-slate-400" title="Invited">Invited</span>`;
+            }
+
+            const typeColor = p.type === 'Oral' ? 'text-blue-600 bg-blue-50' : 'text-teal-600 bg-teal-50';
+
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <span class="${themeObj.color} text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">${themeObj.label}</span>
+                    ${scoreBadge}
+                </div>
+                <h4 class="font-bold text-slate-800 mb-1 leading-snug">${p.title}</h4>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs font-bold px-2 py-0.5 rounded ${typeColor}">${p.type}</span>
+                    <span class="text-xs text-slate-400 font-mono">ID: #${p.id}</span>
+                </div>
+                <div class="bg-slate-50 p-3 rounded text-sm text-slate-600 border border-slate-100">
+                    <strong class="text-slate-800 text-xs uppercase block mb-1">Selection Rationale</strong>
+                    ${p.rationale}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // 5. Setup Interactive Filters
+    function setupFilters() {
+        const buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                buttons.forEach(b => {
+                    b.classList.remove('bg-slate-800', 'text-white');
+                    b.classList.add('bg-slate-200', 'text-slate-600');
                 });
-            });
-        }
+                e.target.classList.remove('bg-slate-200', 'text-slate-600');
+                e.target.classList.add('bg-slate-800', 'text-white');
 
-    </script>
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. Chart.js used for visualization. -->
+                renderPapers(e.target.dataset.filter);
+            });
+        });
+    }
+</script>
+
 </body>
 </html>

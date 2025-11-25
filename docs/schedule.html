@@ -55,26 +55,13 @@
       }
     }</script>
 
-    <!-- --- 2. DASHBOARD LIBRARIES & CONFIG --- -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // --- CRITICAL FIX ---
-        // We disable 'preflight'. This stops Tailwind from resetting your site's 
-        // existing Bootstrap/Quarto styles (which was hiding your sidebar links).
-        tailwind.config = {
-            corePlugins: {
-                preflight: false, 
-            }
-        }
-    </script>
-    
+    <!-- --- 2. DASHBOARD LIBRARIES (No Tailwind) --- -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- --- 3. SCOPED DASHBOARD CSS --- -->
+    <!-- --- 3. CUSTOM DASHBOARD CSS (Replaces Tailwind) --- -->
     <style>
-        /* Variables for the dashboard specifically */
         :root {
             --primary: #2563eb; 
             --secondary: #0f172a; 
@@ -84,51 +71,95 @@
             --text-main: #334155; 
         }
         
-        /* Apply Inter font ONLY to the dashboard content wrapper */
+        /* Dashboard Wrapper */
         .dashboard-wrapper {
             font-family: 'Inter', sans-serif;
             color: var(--text-main);
-            background-color: transparent; /* Let site bg show through */
         }
         
-        /* Restore basic styling for dashboard elements since Preflight is off */
         .dashboard-wrapper h1, 
         .dashboard-wrapper h2, 
         .dashboard-wrapper h3 {
             font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 0.5em;
+            color: #1e293b;
         }
 
+        /* Cards */
+        .dash-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Chart */
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 400px;
+            max-width: 300px;
             height: 250px;
             margin: 0 auto;
         }
 
+        /* Pills */
+        .theme-pill {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Animations */
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Layout Grid for Large Screens */
+        /* Filter Buttons */
+        .filter-btn {
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .filter-btn.active { background-color: #1e293b; color: white; }
+        .filter-btn:not(.active) { background-color: #e2e8f0; color: #475569; }
+
+        /* Agenda Items */
+        .agenda-item {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .agenda-item:last-child { border-bottom: none; }
+        .agenda-time {
+            font-family: monospace;
+            color: #64748b;
+            font-weight: 500;
+        }
+        .agenda-badge {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        
+        /* Grid Layout Fixes for Quarto */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
         }
-        @media (min-width: 1024px) {
-            .dashboard-grid { grid-template-columns: repeat(12, 1fr); }
-            .col-span-5 { grid-column: span 5 / span 5; }
-            .col-span-7 { grid-column: span 7 / span 7; }
-        }
-        
-        /* Ensure sidebar works nicely */
-        #quarto-content {
-            margin-top: 0 !important; /* Fix any gap issues */
+        @media (min-width: 992px) {
+            .dashboard-grid { grid-template-columns: 5fr 7fr; }
         }
     </style>
 </head>
@@ -218,44 +249,48 @@
     <!-- MAIN DASHBOARD CONTENT -->
     <main class="content dashboard-wrapper" id="quarto-document-content">
         
-        <header class="mb-8 border-b border-slate-200 pb-4">
-            <h1 class="text-3xl font-bold text-slate-900">Interactive Program</h1>
-            <div class="flex items-center gap-4 text-sm text-slate-500 mt-2">
-                <p><i class="fa-regular fa-calendar mr-2"></i>Jan 26, 2026</p>
-                <p><i class="fa-solid fa-location-dot mr-2"></i>Singapore EXPO</p>
+        <header class="mb-4 border-bottom pb-3">
+            <h1 class="h2 text-dark fw-bold">Interactive Program</h1>
+            <div class="d-flex gap-3 text-secondary small mt-2">
+                <span><i class="fa-regular fa-calendar me-2"></i>Jan 26, 2026</span>
+                <span><i class="fa-solid fa-location-dot me-2"></i>Singapore EXPO</span>
             </div>
         </header>
 
-        <div class="space-y-8">
+        <div class="d-flex flex-column gap-4">
 
             <!-- Section 1: Dashboard Overview -->
-            <section id="overview" class="fade-in scroll-mt-24">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <section id="overview" class="fade-in scroll-mt-5">
+                <div class="row g-4">
                     <!-- Stats Card -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 col-span-1 md:col-span-1">
-                        <h2 class="text-lg font-bold text-slate-800 mb-4">Program Composition</h2>
-                        <div class="chart-container">
-                            <canvas id="acceptanceChart"></canvas>
-                        </div>
-                        <div class="text-center mt-2 text-sm text-slate-500">
-                            Total Submissions: <span class="font-bold text-slate-800">18</span>
+                    <div class="col-md-4">
+                        <div class="dash-card h-100">
+                            <h2 class="h5 fw-bold text-dark mb-3">Program Composition</h2>
+                            <div class="chart-container">
+                                <canvas id="acceptanceChart"></canvas>
+                            </div>
+                            <div class="text-center mt-2 small text-muted">
+                                Total Submissions: <span class="fw-bold text-dark">18</span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Workshop Goals / Themes -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 flex flex-col justify-center">
-                        <div class="mb-4">
-                            <h2 class="text-lg font-bold text-slate-800">Workshop Mission</h2>
-                            <p class="text-slate-600 mt-1 text-sm">
-                                To advance therapeutic development by moving beyond descriptive spatial analysis to 
-                                <span class="text-blue-600 font-semibold">mechanistic understanding</span> and 
-                                <span class="text-teal-600 font-semibold">causal reasoning</span>.
-                            </p>
-                        </div>
-                        <div>
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Core Themes</h3>
-                            <div class="flex flex-wrap gap-2" id="themePillsStatic">
-                                <!-- Populated by JS -->
+                    <div class="col-md-8">
+                        <div class="dash-card h-100 d-flex flex-column justify-content-center">
+                            <div class="mb-4">
+                                <h2 class="h5 fw-bold text-dark">Workshop Mission</h2>
+                                <p class="text-muted mt-2 small">
+                                    To advance therapeutic development by moving beyond descriptive spatial analysis to 
+                                    <span class="text-primary fw-semibold">mechanistic understanding</span> and 
+                                    <span style="color:#0d9488;" class="fw-semibold">causal reasoning</span>.
+                                </p>
+                            </div>
+                            <div>
+                                <h3 class="small fw-bold text-muted text-uppercase mb-2">Core Themes</h3>
+                                <div id="themePillsStatic">
+                                    <!-- Populated by JS -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -266,32 +301,32 @@
             <div class="dashboard-grid">
                 
                 <!-- Left Column: Interactive Schedule -->
-                <section id="agenda-section" class="col-span-5 space-y-4 scroll-mt-24">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-2xl font-bold text-slate-800">Agenda</h2>
-                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">09:00 - 17:00</span>
+                <section id="agenda-section" class="scroll-mt-5">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h2 class="h4 fw-bold text-dark m-0">Agenda</h2>
+                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">09:00 - 17:00</span>
                     </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div id="scheduleContainer" class="divide-y divide-slate-100">
+                    <div class="dash-card p-0 overflow-hidden">
+                        <div id="scheduleContainer">
                             <!-- Schedule Items Generated by JS -->
                         </div>
                     </div>
                 </section>
 
                 <!-- Right Column: Submission Explorer -->
-                <section id="gallery-section" class="col-span-7 space-y-4 scroll-mt-24">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <h2 class="text-2xl font-bold text-slate-800">Submission Gallery</h2>
+                <section id="gallery-section" class="scroll-mt-5">
+                    <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-3">
+                        <h2 class="h4 fw-bold text-dark m-0">Submission Gallery</h2>
                         <!-- Filters -->
-                        <div class="flex gap-2 text-sm">
-                            <button class="filter-btn active px-3 py-1.5 rounded-lg bg-slate-800 text-white transition-colors" data-filter="all">All</button>
-                            <button class="filter-btn px-3 py-1.5 rounded-lg bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors" data-filter="Oral">Oral</button>
-                            <button class="filter-btn px-3 py-1.5 rounded-lg bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors" data-filter="Poster">Poster</button>
+                        <div class="d-flex gap-2">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="Oral">Oral</button>
+                            <button class="filter-btn" data-filter="Poster">Poster</button>
                         </div>
                     </div>
                     
                     <!-- Dynamic Paper Grid -->
-                    <div id="papersGrid" class="grid grid-cols-1 gap-4">
+                    <div id="papersGrid" class="d-flex flex-column gap-3">
                         <!-- Paper Cards Generated by JS -->
                     </div>
                 </section>
@@ -359,13 +394,13 @@
 </script>
 
 <script>
-    // --- DASHBOARD LOGIC ---
+    // --- DASHBOARD LOGIC (Re-styled for vanilla CSS/Bootstrap) ---
     const themes = [
-        { id: 'spatial-omics', label: 'Spatial Multi-Omics', color: 'bg-purple-100 text-purple-800' },
-        { id: 'imaging', label: 'Omics to Imaging', color: 'bg-blue-100 text-blue-800' },
-        { id: 'causal', label: 'Causal & Mechanistic AI', color: 'bg-teal-100 text-teal-800' },
-        { id: 'therapeutic', label: 'Therapeutic Reasoning', color: 'bg-rose-100 text-rose-800' },
-        { id: 'evaluation', label: 'Evaluation & Accountability', color: 'bg-amber-100 text-amber-800' }
+        { id: 'spatial-omics', label: 'Spatial Multi-Omics', style: 'background:#f3e8ff; color:#6b21a8;' },
+        { id: 'imaging', label: 'Omics to Imaging', style: 'background:#dbeafe; color:#1e40af;' },
+        { id: 'causal', label: 'Causal & Mechanistic AI', style: 'background:#ccfbf1; color:#0f766e;' },
+        { id: 'therapeutic', label: 'Therapeutic Reasoning', style: 'background:#ffe4e6; color:#be123c;' },
+        { id: 'evaluation', label: 'Evaluation & Accountability', style: 'background:#fef3c7; color:#92400e;' }
     ];
 
     const scheduleData = [
@@ -397,11 +432,11 @@
     ];
 
     const papersData = [
-        { id: 12, title: "Spatial profiling reveals molecular determinants of CD8+ dynamics during chemo-immunotherapy in MSS colon cancer", type: "Oral", score: 8.0, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best Clinical Application. Uses spatio-temporal omics (pre/on-treatment) to find mechanistic immunotherapy determinants." },
-        { id: 10, title: "STProtein: predicting spatial protein expression from multi-omics data", type: "Oral", score: 7.8, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best AI Method for Spatial Omics. A novel GNN framework solving the critical problem of spatial proteomics scarcity." },
-        { id: 19, title: "From AUC to Accountability: Metric Choices, Social Norms, and the Deployment of Therapeutic AI", type: "Oral", score: 8.5, scoreColor: "text-green-600", theme: "evaluation", rationale: "Best Evaluation Framework. A critical technical-normative analysis of metrics for therapeutic AI." },
-        { id: 9, title: "NeuroHydra: A Generalizable DINOv3-Mamba Framework for Multimodal Biomedical AI", type: "Oral", score: 9.0, scoreColor: "text-green-600", theme: "imaging", rationale: "Best Imaging AI Method. Novel framework linking 2D vision models to 3D MRI for therapeutic prediction." },
-        { id: 7, title: "Explorations of spatial transcriptomics on brain samples for biological understanding", type: "Oral", score: 7.5, scoreColor: "text-green-600", theme: "spatial-omics", rationale: "Best Platform Benchmarking. A practical, timely comparison of Xenium vs. Visium HD on human brain tissue." },
+        { id: 12, title: "Spatial profiling reveals molecular determinants of CD8+ dynamics during chemo-immunotherapy in MSS colon cancer", type: "Oral", score: 8.0, theme: "spatial-omics", rationale: "Best Clinical Application. Uses spatio-temporal omics (pre/on-treatment) to find mechanistic immunotherapy determinants." },
+        { id: 10, title: "STProtein: predicting spatial protein expression from multi-omics data", type: "Oral", score: 7.8, theme: "spatial-omics", rationale: "Best AI Method for Spatial Omics. A novel GNN framework solving the critical problem of spatial proteomics scarcity." },
+        { id: 19, title: "From AUC to Accountability: Metric Choices, Social Norms, and the Deployment of Therapeutic AI", type: "Oral", score: 8.5, theme: "evaluation", rationale: "Best Evaluation Framework. A critical technical-normative analysis of metrics for therapeutic AI." },
+        { id: 9, title: "NeuroHydra: A Generalizable DINOv3-Mamba Framework for Multimodal Biomedical AI", type: "Oral", score: 9.0, theme: "imaging", rationale: "Best Imaging AI Method. Novel framework linking 2D vision models to 3D MRI for therapeutic prediction." },
+        { id: 7, title: "Explorations of spatial transcriptomics on brain samples for biological understanding", type: "Oral", score: 7.5, theme: "spatial-omics", rationale: "Best Platform Benchmarking. A practical, timely comparison of Xenium vs. Visium HD on human brain tissue." },
         { id: 18, title: "Demo: A Unified Lesion Detection and Segmentation Pipeline Across Diverse Medical Imaging Modalities", type: "Poster", score: 7.0, theme: "imaging", rationale: "Practical pipeline for lesion detection across CT, X-ray, and Echo using foundation models." },
         { id: 13, title: "TGUMIAD: Text-Guided Unified Model for Medical Image Anomaly Detection", type: "Poster", score: 7.0, theme: "imaging", rationale: "Unified vision-language anomaly detection for MRI/CT/OCT using CLIP." },
         { id: 11, title: "Expanding Gene Expression profile in Targeted Spatial Transcriptomics through scRNA-seq data integration", type: "Poster", score: 7.0, theme: "spatial-omics", rationale: "Effective gene expression imputation method for targeted spatial platforms." },
@@ -452,7 +487,8 @@
         const container = document.getElementById('themePillsStatic');
         themes.forEach(t => {
             const pill = document.createElement('span');
-            pill.className = `px-2 py-1 rounded text-xs font-medium ${t.color}`;
+            pill.className = "theme-pill";
+            pill.style = t.style;
             pill.textContent = t.label;
             container.appendChild(pill);
         });
@@ -463,35 +499,35 @@
         const container = document.getElementById('scheduleContainer');
         scheduleData.forEach(item => {
             const div = document.createElement('div');
-            div.className = "p-4 hover:bg-slate-50 transition-colors";
+            div.className = "agenda-item";
             
             let contentHTML = '';
             if (item.content) {
                 const subItems = item.content.map(sub => `
-                    <div class="flex gap-3 mt-2 ml-2 pl-3 border-l-2 border-slate-200 text-sm">
-                        <span class="font-mono text-slate-400 w-10 shrink-0">${sub.time}</span>
+                    <div class="d-flex gap-3 mt-2 ms-2 ps-3 border-start text-sm">
+                        <span class="text-muted text-nowrap" style="width: 50px; font-family:monospace;">${sub.time}</span>
                         <div>
-                            <span class="font-semibold text-slate-700 block">${sub.title}</span>
-                            <span class="text-slate-500 text-xs">${sub.type} • ${sub.speaker}</span>
+                            <span class="fw-semibold d-block text-dark">${sub.title}</span>
+                            <span class="small text-muted">${sub.type} • ${sub.speaker}</span>
                         </div>
                     </div>
                 `).join('');
                 contentHTML = `<div class="mt-2">${subItems}</div>`;
             }
 
-            let badgeColor = item.type === 'session' ? 'bg-blue-100 text-blue-700' : 
-                             item.type === 'break' ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-600';
+            let badgeClass = item.type === 'session' ? 'bg-primary bg-opacity-10 text-primary' : 
+                             item.type === 'break' ? 'bg-warning bg-opacity-10 text-warning' : 'bg-secondary bg-opacity-10 text-secondary';
 
             div.innerHTML = `
-                <div class="flex justify-between items-start">
-                    <div class="flex gap-3">
-                        <span class="font-mono font-medium text-slate-500 pt-0.5">${item.time}</span>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="d-flex gap-3">
+                        <span class="agenda-time">${item.time}</span>
                         <div>
-                            <h3 class="font-bold text-slate-800">${item.title}</h3>
-                            ${item.detail ? `<p class="text-xs text-slate-500 mt-0.5">${item.detail}</p>` : ''}
+                            <h3 class="h6 fw-bold text-dark m-0">${item.title}</h3>
+                            ${item.detail ? `<p class="small text-muted m-0 mt-1">${item.detail}</p>` : ''}
                         </div>
                     </div>
-                    <span class="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded ${badgeColor}">${item.type}</span>
+                    <span class="agenda-badge ${badgeClass}">${item.type}</span>
                 </div>
                 ${contentHTML}
             `;
@@ -499,7 +535,7 @@
         });
     }
 
-    // 4. Render Papers with Filtering
+    // 4. Render Papers
     function renderPapers(filterType) {
         const container = document.getElementById('papersGrid');
         container.innerHTML = ''; 
@@ -509,27 +545,24 @@
         filtered.forEach(p => {
             const themeObj = themes.find(t => t.id === p.theme);
             const card = document.createElement('div');
-            card.className = "bg-white p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow fade-in";
+            card.className = "dash-card p-3 mb-0 fade-in";
             
-            let scoreBadge = '';
-            if (!p.score) {
-                scoreBadge = `<span class="text-xs font-bold text-slate-400" title="Invited">Invited</span>`;
-            }
+            let scoreBadge = !p.score ? `<span class="badge bg-secondary">Invited</span>` : '';
 
-            const typeColor = p.type === 'Oral' ? 'text-blue-600 bg-blue-50' : 'text-teal-600 bg-teal-50';
+            const typeClass = p.type === 'Oral' ? 'text-primary bg-primary bg-opacity-10' : 'text-success bg-success bg-opacity-10';
 
             card.innerHTML = `
-                <div class="flex justify-between items-start mb-2">
-                    <span class="${themeObj.color} text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">${themeObj.label}</span>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="theme-pill" style="${themeObj.style}">${themeObj.label}</span>
                     ${scoreBadge}
                 </div>
-                <h4 class="font-bold text-slate-800 mb-1 leading-snug">${p.title}</h4>
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="text-xs font-bold px-2 py-0.5 rounded ${typeColor}">${p.type}</span>
-                    <span class="text-xs text-slate-400 font-mono">ID: #${p.id}</span>
+                <h4 class="h6 fw-bold text-dark mb-1">${p.title}</h4>
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge rounded-pill ${typeClass}">${p.type}</span>
+                    <span class="small text-muted font-monospace">ID: #${p.id}</span>
                 </div>
-                <div class="bg-slate-50 p-3 rounded text-sm text-slate-600 border border-slate-100">
-                    <strong class="text-slate-800 text-xs uppercase block mb-1">Selection Rationale</strong>
+                <div class="bg-light p-3 rounded border text-muted small">
+                    <strong class="d-block text-dark small text-uppercase mb-1">Selection Rationale</strong>
                     ${p.rationale}
                 </div>
             `;
@@ -537,18 +570,13 @@
         });
     }
 
-    // 5. Setup Interactive Filters
+    // 5. Filters
     function setupFilters() {
         const buttons = document.querySelectorAll('.filter-btn');
         buttons.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                buttons.forEach(b => {
-                    b.classList.remove('bg-slate-800', 'text-white');
-                    b.classList.add('bg-slate-200', 'text-slate-600');
-                });
-                e.target.classList.remove('bg-slate-200', 'text-slate-600');
-                e.target.classList.add('bg-slate-800', 'text-white');
-
+                buttons.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
                 renderPapers(e.target.dataset.filter);
             });
         });

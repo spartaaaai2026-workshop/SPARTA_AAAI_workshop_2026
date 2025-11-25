@@ -7,13 +7,7 @@
 
     <title>Schedule – SPARTA</title>
 
-    <!-- --- 1. DASHBOARD LIBRARIES (Required for the Schedule View) --- -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- --- 2. QUARTO SYSTEM STYLES (Required for the Sidebar/Layout) --- -->
+    <!-- --- 1. SITE STANDARD STYLES (Quarto/Bootstrap) --- -->
     <style>
         code{white-space: pre-wrap;}
         span.smallcaps{font-variant: small-caps;}
@@ -28,7 +22,7 @@
         }
     </style>
 
-    <!-- Quarto Scripts (Assumes these exist in your site_libs folder) -->
+    <!-- Quarto Scripts -->
     <script src="site_libs/quarto-nav/quarto-nav.js"></script>
     <script src="site_libs/clipboard/clipboard.min.js"></script>
     <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -61,9 +55,26 @@
       }
     }</script>
 
-    <!-- --- 3. CUSTOM DASHBOARD CSS --- -->
+    <!-- --- 2. DASHBOARD LIBRARIES & CONFIG --- -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // --- CRITICAL FIX ---
+        // We disable 'preflight'. This stops Tailwind from resetting your site's 
+        // existing Bootstrap/Quarto styles (which was hiding your sidebar links).
+        tailwind.config = {
+            corePlugins: {
+                preflight: false, 
+            }
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- --- 3. SCOPED DASHBOARD CSS --- -->
     <style>
-        /* Scoped styles to ensure dashboard looks right inside Quarto */
+        /* Variables for the dashboard specifically */
         :root {
             --primary: #2563eb; 
             --secondary: #0f172a; 
@@ -73,10 +84,20 @@
             --text-main: #334155; 
         }
         
-        /* Apply Inter font specifically to the dashboard content wrapper */
+        /* Apply Inter font ONLY to the dashboard content wrapper */
         .dashboard-wrapper {
             font-family: 'Inter', sans-serif;
             color: var(--text-main);
+            background-color: transparent; /* Let site bg show through */
+        }
+        
+        /* Restore basic styling for dashboard elements since Preflight is off */
+        .dashboard-wrapper h1, 
+        .dashboard-wrapper h2, 
+        .dashboard-wrapper h3 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5em;
         }
 
         .chart-container {
@@ -87,19 +108,27 @@
             margin: 0 auto;
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Layout Grid for Large Screens */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        @media (min-width: 1024px) {
+            .dashboard-grid { grid-template-columns: repeat(12, 1fr); }
+            .col-span-5 { grid-column: span 5 / span 5; }
+            .col-span-7 { grid-column: span 7 / span 7; }
+        }
         
-        /* Conflict Fix: Reset list styles for sidebar so Tailwind doesn't mess them up */
-        .sidebar-menu-container ul {
-            list-style: none;
-            padding-left: 0;
+        /* Ensure sidebar works nicely */
+        #quarto-content {
+            margin-top: 0 !important; /* Fix any gap issues */
         }
     </style>
 </head>
@@ -125,10 +154,10 @@
   </nav>
 </header>
 
-<!-- MAIN CONTAINER -->
+<!-- MAIN PAGE STRUCTURE -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
     
-    <!-- SIDEBAR NAVIGATION -->
+    <!-- LEFT SIDEBAR (Navigation) -->
     <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
         <div class="pt-lg-2 mt-2 text-center sidebar-header">
         <div class="sidebar-title mb-0 py-0">
@@ -153,7 +182,6 @@
             </li>
             <li class="sidebar-item">
                 <div class="sidebar-item-container"> 
-                <!-- ACTIVE LINK for Schedule -->
                 <a href="./schedule.html" class="sidebar-item-text sidebar-link active">
                 <span class="menu-text">Schedule</span></a>
                 </div>
@@ -175,10 +203,21 @@
     </nav>
     <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
     
-    <!-- --- DASHBOARD CONTENT AREA --- -->
+    <!-- RIGHT SIDEBAR (On this Page) -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+            <h2 id="toc-title">On this page</h2>
+            <ul>
+                <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview &amp; Mission</a></li>
+                <li><a href="#agenda-section" id="toc-agenda" class="nav-link" data-scroll-target="#agenda-section">Full Agenda</a></li>
+                <li><a href="#gallery-section" id="toc-gallery" class="nav-link" data-scroll-target="#gallery-section">Submission Gallery</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT -->
     <main class="content dashboard-wrapper" id="quarto-document-content">
         
-        <!-- Header from Dashboard -->
         <header class="mb-8 border-b border-slate-200 pb-4">
             <h1 class="text-3xl font-bold text-slate-900">Interactive Program</h1>
             <div class="flex items-center gap-4 text-sm text-slate-500 mt-2">
@@ -190,7 +229,7 @@
         <div class="space-y-8">
 
             <!-- Section 1: Dashboard Overview -->
-            <section id="overview" class="fade-in">
+            <section id="overview" class="fade-in scroll-mt-24">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Stats Card -->
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 col-span-1 md:col-span-1">
@@ -224,10 +263,10 @@
             </section>
 
             <!-- Section 2: Dual Column View (Schedule + Paper Explorer) -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="dashboard-grid">
                 
                 <!-- Left Column: Interactive Schedule -->
-                <section class="lg:col-span-5 space-y-4">
+                <section id="agenda-section" class="col-span-5 space-y-4 scroll-mt-24">
                     <div class="flex items-center justify-between">
                         <h2 class="text-2xl font-bold text-slate-800">Agenda</h2>
                         <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">09:00 - 17:00</span>
@@ -240,7 +279,7 @@
                 </section>
 
                 <!-- Right Column: Submission Explorer -->
-                <section class="lg:col-span-7 space-y-4">
+                <section id="gallery-section" class="col-span-7 space-y-4 scroll-mt-24">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <h2 class="text-2xl font-bold text-slate-800">Submission Gallery</h2>
                         <!-- Filters -->
@@ -261,26 +300,18 @@
     </main> 
 </div> 
 
-<!-- --- QUARTO SCRIPTS (Boilerplate to make sidebar work) --- -->
+<!-- --- SCRIPTS --- -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
-    
-    // FIX: Check if AnchorJS is defined before using it
     if (window.AnchorJS) {
         const anchorJS = new window.AnchorJS();
-        anchorJS.options = {
-          placement: 'right',
-          icon: icon
-        };
+        anchorJS.options = { placement: 'right', icon: icon };
         anchorJS.add('.anchored');
     }
-
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {                     
-          return true;
-        }
+        if (clz.startsWith('code-annotation-')) { return true; }
       }
       return false;
     }
@@ -296,9 +327,7 @@
         button.setAttribute("data-bs-placement", "left");
         button.setAttribute("data-bs-title", "Copied!");
         tooltip = new bootstrap.Tooltip(button, 
-          { trigger: "manual", 
-            customClass: "code-copy-button-tooltip",
-            offset: [0, -8]});
+          { trigger: "manual", customClass: "code-copy-button-tooltip", offset: [0, -8]});
         tooltip.show();    
       }
       setTimeout(function() {
@@ -316,34 +345,21 @@
     const getTextToCopy = function(trigger) {
         const codeEl = trigger.previousElementSibling.cloneNode(true);
         for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+          if (isCodeAnnotation(childEl)) { childEl.remove(); }
         }
         return codeEl.innerText;
     }
-
-    // FIX: Check if ClipboardJS is defined before using it
     if (window.ClipboardJS) {
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
         });
         clipboard.on('success', onCopySuccess);
-        
-        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-            text: getTextToCopy,
-            container: window.document.getElementById('quarto-embedded-source-code-modal')
-          });
-          clipboardModal.on('success', onCopySuccess);
-        }
     }
   });
 </script>
 
-<!-- --- DASHBOARD LOGIC (The custom JS for charts/schedule) --- -->
 <script>
-    // --- DATA ---
+    // --- DASHBOARD LOGIC ---
     const themes = [
         { id: 'spatial-omics', label: 'Spatial Multi-Omics', color: 'bg-purple-100 text-purple-800' },
         { id: 'imaging', label: 'Omics to Imaging', color: 'bg-blue-100 text-blue-800' },
